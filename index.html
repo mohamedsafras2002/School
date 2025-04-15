@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Google Fonts: Cinzel for luxury headings, Raleway for body -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
     /* Global Variables and Resets */
@@ -52,7 +54,11 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid var(--accent-gold);
-      transition: background var(--transition-speed) ease;
+      transition: all var(--transition-speed) ease;
+    }
+    header.scrolled {
+      padding: 0.5rem 5%;
+      background: rgba(26, 26, 26, 0.98);
     }
     .logo-container {
       display: flex;
@@ -62,12 +68,20 @@
     .logo-container img {
       width: 60px;
       height: auto;
+      transition: all var(--transition-speed) ease;
+    }
+    header.scrolled .logo-container img {
+      width: 50px;
     }
     .logo-container h1 {
       font-size: 1.8rem;
       background: linear-gradient(45deg, var(--accent-gold), #ffffff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      transition: all var(--transition-speed) ease;
+    }
+    header.scrolled .logo-container h1 {
+      font-size: 1.5rem;
     }
     nav {
       position: relative;
@@ -77,38 +91,70 @@
       font-size: 1.5rem;
       color: var(--accent-gold);
       cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .menu-toggle.active {
+      transform: rotate(90deg);
     }
     .nav-links {
       display: flex;
       gap: 2rem;
       list-style: none;
+      transition: all 0.5s ease;
     }
     .nav-links li a {
       color: var(--accent-gold);
       font-weight: 600;
-      transition: color var(--transition-speed);
+      transition: all var(--transition-speed);
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #ffffff;
+      transition: width 0.3s ease;
     }
     .nav-links li a:hover {
       color: #ffffff;
+    }
+    .nav-links li a:hover::after {
+      width: 100%;
     }
     /* Mobile Nav */
     @media (max-width: 768px) {
       .menu-toggle {
         display: block;
+        z-index: 1001;
       }
       .nav-links {
         display: none;
         flex-direction: column;
-        position: absolute;
-        top: 120%;
+        position: fixed;
+        top: 0;
         right: 0;
+        height: 100vh;
+        width: 70%;
+        max-width: 300px;
         background: var(--bg-dark);
-        width: 200px;
-        padding: 1rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        padding: 6rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        transform: translateX(100%);
+        transition: transform 0.5s ease;
       }
       .nav-links.active {
         display: flex;
+        transform: translateX(0);
+      }
+      .nav-links li {
+        margin-bottom: 1.5rem;
+      }
+      .nav-links li a {
+        font-size: 1.2rem;
       }
     }
 
@@ -116,27 +162,28 @@
     .hero {
       position: relative;
       height: 100vh;
-    background: linear-gradient(var(--overlay-dark), var(--overlay-dark)),
+      min-height: 600px;
+      background: linear-gradient(var(--overlay-dark), var(--overlay-dark)),
             url('school-logo.jpg') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: #fff;
-      animation: fadeIn 1s ease-out;
     }
     .hero-content {
       max-width: 800px;
-      padding: 0 1rem;
-      animation: slideUp 1s ease-out;
+      padding: 0 2rem;
     }
     .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
     }
     .hero p {
-      font-size: 1.3rem;
-      margin-bottom: 2rem;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
     }
     .cta-button {
       display: inline-block;
@@ -145,21 +192,13 @@
       color: var(--bg-dark);
       font-weight: 700;
       border-radius: 30px;
-      transition: transform 0.3s ease, background 0.3s ease;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
     .cta-button:hover {
-      transform: scale(1.05);
+      transform: translateY(-3px);
       background: #fff;
-    }
-
-    /* Keyframes for Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(50px); }
-      to { transform: translateY(0); }
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
     /* About Section: Elegant two-column design */
@@ -175,26 +214,41 @@
       width: 100%;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      transition: transform var(--transition-speed);
+      transition: all var(--transition-speed) cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .about img:hover {
       transform: scale(1.03);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
     }
     .about-content h2 {
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 3vw, 2.5rem);
       color: var(--bg-dark);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
     .about-content p {
       font-size: 1.1rem;
       line-height: 1.6;
       color: #555;
+      margin-bottom: 1rem;
     }
     .about-content ul {
-      margin-top: 1rem;
-      list-style: disc;
-      padding-left: 1.5rem;
+      margin-top: 1.5rem;
+      list-style: none;
       color: #555;
+    }
+    .about-content ul li {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    .about-content ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent-gold);
+      font-size: 1.5rem;
+      line-height: 1;
     }
 
     /* Programs Section: Luxurious cards with hover effects */
@@ -204,7 +258,7 @@
     }
     .programs h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 3vw, 2.5rem);
       color: var(--bg-dark);
       margin-bottom: 3rem;
     }
@@ -218,28 +272,48 @@
       padding: 2rem;
       border-radius: 10px;
       border: 1px solid rgba(0,0,0,0.1);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       position: relative;
       overflow: hidden;
     }
+    .program-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--accent-gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s ease;
+    }
     .program-card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .program-card:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
     .program-card h3 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
       color: var(--bg-dark);
     }
     .program-card p {
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.6;
       color: #555;
+      margin-bottom: 1rem;
     }
     .program-details {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       font-style: italic;
       color: var(--accent-gold);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
     /* Admissions Section: Step-by-step process with animated boxes */
@@ -250,7 +324,7 @@
       text-align: center;
     }
     .admissions h2 {
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 3vw, 2.5rem);
       margin-bottom: 3rem;
     }
     .admissions-steps {
@@ -262,20 +336,23 @@
       background: rgba(212, 175, 55, 0.15);
       padding: 2rem;
       border-radius: 10px;
-      transition: transform 0.3s ease, background 0.3s ease;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(212, 175, 55, 0.2);
     }
     .step-box:hover {
       transform: translateY(-8px);
       background: rgba(212, 175, 55, 0.25);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
     .step-box h3 {
-      font-size: 1.6rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
       color: var(--accent-gold);
     }
     .step-box p {
       font-size: 1rem;
       color: #ddd;
+      line-height: 1.6;
     }
 
     /* Testimonials Section: Luxurious quotes grid */
@@ -285,7 +362,7 @@
     }
     .testimonials h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 3vw, 2.5rem);
       color: var(--bg-dark);
       margin-bottom: 3rem;
     }
@@ -300,10 +377,12 @@
       border-radius: 10px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.05);
       position: relative;
-      transition: transform 0.3s ease;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0,0,0,0.05);
     }
     .testimonial-card:hover {
-      transform: scale(1.03);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
     }
     .testimonial-card::before {
       content: '“';
@@ -312,17 +391,20 @@
       left: 10px;
       font-size: 4rem;
       color: var(--accent-gold);
+      opacity: 0.3;
     }
     .testimonial-card p {
       font-size: 1rem;
       line-height: 1.6;
       color: #555;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      font-style: italic;
     }
     .testimonial-card h4 {
       text-align: right;
       font-size: 1.1rem;
       color: var(--bg-dark);
+      font-weight: 700;
     }
 
     /* Contact & Footer Section: Bold and elegant */
@@ -333,55 +415,118 @@
       position: relative;
       overflow: hidden;
     }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-gold), transparent);
+    }
     footer .footer-content {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      gap: 3rem;
       margin-bottom: 2rem;
     }
     footer h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-gold);
     }
     footer p, footer a {
       font-size: 1rem;
       color: #ccc;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+    footer a:hover {
+      color: var(--accent-gold);
     }
     .social-icons {
       display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
     }
     .social-icons a {
       color: var(--accent-gold);
-      font-size: 1.8rem;
-      transition: color 0.3s ease;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
     }
     .social-icons a:hover {
       color: #fff;
+      transform: translateY(-3px);
     }
     .copyright {
       text-align: center;
       font-size: 0.9rem;
-      padding-top: 1rem;
+      padding-top: 2rem;
       border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 2rem;
     }
 
-    /* Section-specific Scroll Animations */
-    .animate {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .about {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .about-image {
+        order: -1;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+      }
     }
-    .animate.visible {
-      opacity: 1;
-      transform: translateY(0);
+
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 500px;
+      }
+      .hero-content {
+        padding: 0 1.5rem;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero p {
+        font-size: 1.1rem;
+      }
+      .program-card, .step-box, .testimonial-card {
+        padding: 1.5rem;
+      }
+      footer .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .cta-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      .about, .programs, .admissions, .testimonials {
+        padding: 4rem 5%;
+      }
+      .program-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Smooth scrolling for anchor links */
+    html {
+      scroll-behavior: smooth;
     }
   </style>
 </head>
 <body>
   <!-- Navigation -->
-  <header>
+  <header id="header">
     <div class="logo-container">
       <img src="school-logo.jpg" alt="School Logo" />
       <h1>Zahira Ahadiyyah School</h1>
@@ -400,8 +545,8 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero" id="home">
-    <div class="hero-content animate">
+  <section class="hero" id="home" data-aos="fade" data-aos-duration="1000">
+    <div class="hero-content">
       <h1>Welcome to Zahira Ahadiyyah School</h1>
       <p>Fostering Islamic Education with Modern Excellence for a Bright Future</p>
       <a href="#admissions" class="cta-button">Apply Now</a>
@@ -409,11 +554,11 @@
   </section>
 
   <!-- About Section -->
-  <section class="about animate" id="about">
-    <div class="about-image">
+  <section class="about" id="about">
+    <div class="about-image" data-aos="fade-right" data-aos-duration="800">
       <img src="campus-lux.png" alt="Luxurious Campus" />
     </div>
-    <div class="about-content">
+    <div class="about-content" data-aos="fade-left" data-aos-duration="800">
         <h2>About Zahira Ahadiyyah School</h2>
         <p>Zahira Ahadiyyah School, a leading educational institution in Dharga Town, blends Islamic values with modern education to empower young minds. With a commitment to academic excellence and a nurturing environment, we prepare students to lead with integrity and vision.</p>
         <ul>
@@ -426,129 +571,186 @@
   </section>
 
   <!-- Programs Section -->
-<section class="programs animate" id="programs">
-    <h2>Academic Programs at Zahira Ahadiyyah School</h2>
+  <section class="programs" id="programs">
+    <h2 data-aos="fade-up">Academic Programs at Zahira Ahadiyyah School</h2>
     <div class="program-cards">
-      <div class="program-card">
+      <div class="program-card" data-aos="fade-up" data-aos-delay="100">
         <h3>Islamic Studies Program</h3>
         <p>A comprehensive program designed to integrate Islamic teachings with modern academics, ensuring a well-rounded education.</p>
         <div class="program-details">
-          <span>Holistic Approach</span><br>
+          <span>Holistic Approach</span>
           <span>Focus on Quran and Hadith</span>
         </div>
       </div>
-      <div class="program-card">
+      <div class="program-card" data-aos="fade-up" data-aos-delay="200">
         <h3>Advanced Science and Technology</h3>
         <p>Equipping students with cutting-edge knowledge in subjects like Physics, Chemistry, and Computer Science through hands-on experiences.</p>
         <div class="program-details">
-          <span>Practical Learning</span><br>
+          <span>Practical Learning</span>
           <span>State-of-the-art Labs</span>
         </div>
       </div>
-      <div class="program-card">
+      <div class="program-card" data-aos="fade-up" data-aos-delay="300">
         <h3>Arts and Humanities</h3>
         <p>An enriching program focusing on critical thinking, history, literature, and cultural studies to nurture creative minds.</p>
         <div class="program-details">
-          <span>Creative Expression</span><br>
+          <span>Creative Expression</span>
           <span>In-depth Cultural Knowledge</span>
         </div>
       </div>
-      <!-- Additional program cards can be added here -->
     </div>
   </section>
-  
 
- <!-- Admissions Section -->
-<section class="admissions animate" id="admissions">
-    <h2>Admissions Process at Zahira Ahadiyyah School</h2>
+  <!-- Admissions Section -->
+  <section class="admissions" id="admissions">
+    <h2 data-aos="fade-up">Admissions Process at Zahira Ahadiyyah School</h2>
     <div class="admissions-steps">
-      <div class="step-box">
+      <div class="step-box" data-aos="fade-up" data-aos-delay="100">
         <h3>Inquiry</h3>
         <p>Fill out our online inquiry form to express your interest in joining Zahira Ahadiyyah School.</p>
       </div>
-      <div class="step-box">
+      <div class="step-box" data-aos="fade-up" data-aos-delay="200">
         <h3>Campus Tour</h3>
         <p>Visit our beautiful campus and explore our facilities while learning more about our Islamic and academic programs.</p>
       </div>
-      <div class="step-box">
+      <div class="step-box" data-aos="fade-up" data-aos-delay="300">
         <h3>Interview</h3>
-        <p>Meet with our staff to discuss your child’s academic goals and how Zahira Ahadiyyah School can help them grow.</p>
+        <p>Meet with our staff to discuss your child's academic goals and how Zahira Ahadiyyah School can help them grow.</p>
       </div>
-      <div class="step-box">
+      <div class="step-box" data-aos="fade-up" data-aos-delay="400">
         <h3>Enrollment</h3>
         <p>Complete the necessary paperwork to enroll your child and become part of our esteemed institution.</p>
       </div>
     </div>
   </section>
-  
 
   <!-- Testimonials Section -->
-<section class="testimonials animate" id="testimonials">
-    <h2>What Our Community Says About Zahira Ahadiyyah School</h2>
+  <section class="testimonials" id="testimonials">
+    <h2 data-aos="fade-up">What Our Community Says About Zahira Ahadiyyah School</h2>
     <div class="testimonial-grid">
-      <div class="testimonial-card">
+      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
         <p>"Zahira Ahadiyyah School provided my child with the perfect balance of Islamic education and modern academics. It's truly a place where students grow both spiritually and intellectually."</p>
         <h4>- Parent</h4>
       </div>
-      <div class="testimonial-card">
+      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
         <p>"Attending Zahira Ahadiyyah School has been a life-changing experience. The values of discipline, integrity, and knowledge have prepared me for success in all areas of life."</p>
         <h4>- Alumni</h4>
       </div>
-      <!-- Additional testimonial cards can be added here -->
+      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+        <p>"The teachers at Zahira Ahadiyyah School go above and beyond to ensure each student reaches their full potential while maintaining strong Islamic values."</p>
+        <h4>- Current Student</h4>
+      </div>
     </div>
   </section>
-  
 
- <!-- Contact & Footer Section -->
-<footer id="contact">
+  <!-- Contact & Footer Section -->
+  <footer id="contact">
     <div class="footer-content">
-      <div>
+      <div data-aos="fade-up" data-aos-delay="100">
         <h3>Contact Us</h3>
         <p>123 Zahira Road, Dharga Town, Sri Lanka</p>
         <p>Email: contact@zahiraahadiyyah.edu.lk</p>
         <p>Phone: +94 (11) 234-5678</p>
       </div>
-      <div>
+      <div data-aos="fade-up" data-aos-delay="200">
         <h3>Follow Us</h3>
         <div class="social-icons">
-          <a href="https://www.facebook.com/share/1Hgg7QY5yY/"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/zahira_ahadiyyah_school?igsh=MW95ZmZzMzR5eTA1NQ=="><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/1Hgg7QY5yY/" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.instagram.com/zahira_ahadiyyah_school?igsh=MW95ZmZzMzR5eTA1NQ==" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <h3>Quick Links</h3>
+        <p><a href="#home">Home</a></p>
+        <p><a href="#about">About Us</a></p>
+        <p><a href="#programs">Programs</a></p>
+        <p><a href="#admissions">Admissions</a></p>
+      </div>
     </div>
-    <div class="copyright">
+    <div class="copyright" data-aos="fade-up">
       <p>&copy; 2025 Zahira Ahadiyyah School. All rights reserved.</p>
     </div>
   </footer>
-  
 
-  <!-- JavaScript: Smooth interactions and scroll animations -->
+  <!-- JavaScript -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // Initialize AOS animation library
+    AOS.init({
+      once: true, // animations only happen once
+      easing: 'ease-in-out',
+      duration: 800
+    });
+
     // Mobile Menu Toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
     });
 
-    // Scroll Animation: Add 'visible' class when elements are in viewport
-    const animateElements = document.querySelectorAll('.animate');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // Animate once
-        }
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('active');
       });
-    }, { threshold: 0.2 });
-    animateElements.forEach(el => {
-      observer.observe(el);
     });
 
-    // Parallax Effect for Hero Background
+    // Header scroll effect
+    const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      document.querySelector('.hero').style.backgroundPositionY = (scrolled * 0.5) + 'px';
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scrolling for anchor links with offset
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerHeight = document.querySelector('header').offsetHeight;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Lazy loading for images
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.onload = () => {
+            img.removeAttribute('data-src');
+            img.style.opacity = 1;
+          };
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '100px' });
+
+    lazyImages.forEach(img => {
+      imageObserver.observe(img);
+      img.style.opacity = 0;
+      img.style.transition = 'opacity 0.5s ease';
     });
   </script>
 </body>
