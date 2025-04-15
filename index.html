@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zahira Ahadiyyah School</title>
+<link rel="icon" href="school-logo.jpg" type="image/jpeg">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google Fonts: Cinzel for luxury headings, Raleway for body -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Global Variables and Resets */
+    :root {
+      --bg-dark: #1a1a1a;               /* Deep dark background */
+      --accent-gold: #d4af37;           /* Shimmering gold accent */
+      --light-gray: #f2f2f2;
+      --overlay-dark: rgba(0, 0, 0, 0.6);
+      --transition-speed: 0.4s;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Raleway', sans-serif;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+    a {
+      text-decoration: none;
+    }
+    body {
+      background: var(--light-gray);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Navigation Bar */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 2000;
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--accent-gold);
+      transition: background var(--transition-speed) ease;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-container img {
+      width: 60px;
+      height: auto;
+    }
+    .logo-container h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(45deg, var(--accent-gold), #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    nav {
+      position: relative;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links li a {
+      color: var(--accent-gold);
+      font-weight: 600;
+      transition: color var(--transition-speed);
+    }
+    .nav-links li a:hover {
+      color: #ffffff;
+    }
+    /* Mobile Nav */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: var(--bg-dark);
+        width: 200px;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+      .nav-links.active {
+        display: flex;
+      }
+    }
+
+    /* Hero Section: Fullscreen with luxurious overlay */
+    .hero {
+      position: relative;
+      height: 100vh;
+    background: linear-gradient(var(--overlay-dark), var(--overlay-dark)),
+            url('school-logo.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      animation: fadeIn 1s ease-out;
+    }
+    .hero-content {
+      max-width: 800px;
+      padding: 0 1rem;
+      animation: slideUp 1s ease-out;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      font-weight: 700;
+      border-radius: 30px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+      background: #fff;
+    }
+
+    /* Keyframes for Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(50px); }
+      to { transform: translateY(0); }
+    }
+
+    /* About Section: Elegant two-column design */
+    .about {
+      padding: 6rem 5%;
+      background: #ffffff;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .about img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform var(--transition-speed);
+    }
+    .about img:hover {
+      transform: scale(1.03);
+    }
+    .about-content h2 {
+      font-size: 2.5rem;
+      color: var(--bg-dark);
+      margin-bottom: 1rem;
+    }
+    .about-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+    }
+    .about-content ul {
+      margin-top: 1rem;
+      list-style: disc;
+      padding-left: 1.5rem;
+      color: #555;
+    }
+
+    /* Programs Section: Luxurious cards with hover effects */
+    .programs {
+      padding: 6rem 5%;
+      background: linear-gradient(135deg, #f7f7f7, #eaeaea);
+    }
+    .programs h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--bg-dark);
+      margin-bottom: 3rem;
+    }
+    .program-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .program-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .program-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .program-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--bg-dark);
+    }
+    .program-card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #555;
+    }
+    .program-details {
+      margin-top: 1rem;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+
+    /* Admissions Section: Step-by-step process with animated boxes */
+    .admissions {
+      padding: 6rem 5%;
+      background: var(--bg-dark);
+      color: #fff;
+      text-align: center;
+    }
+    .admissions h2 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+    }
+    .admissions-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .step-box {
+      background: rgba(212, 175, 55, 0.15);
+      padding: 2rem;
+      border-radius: 10px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .step-box:hover {
+      transform: translateY(-8px);
+      background: rgba(212, 175, 55, 0.25);
+    }
+    .step-box h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-gold);
+    }
+    .step-box p {
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    /* Testimonials Section: Luxurious quotes grid */
+    .testimonials {
+      padding: 6rem 5%;
+      background: #ffffff;
+    }
+    .testimonials h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--bg-dark);
+      margin-bottom: 3rem;
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .testimonial-card {
+      background: #fefefe;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .testimonial-card:hover {
+      transform: scale(1.03);
+    }
+    .testimonial-card::before {
+      content: '“';
+      position: absolute;
+      top: -20px;
+      left: 10px;
+      font-size: 4rem;
+      color: var(--accent-gold);
+    }
+    .testimonial-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+    .testimonial-card h4 {
+      text-align: right;
+      font-size: 1.1rem;
+      color: var(--bg-dark);
+    }
+
+    /* Contact & Footer Section: Bold and elegant */
+    footer {
+      padding: 4rem 5% 2rem;
+      background: linear-gradient(135deg, var(--bg-dark), #000);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    footer .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    footer h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    footer p, footer a {
+      font-size: 1rem;
+      color: #ccc;
+    }
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .social-icons a {
+      color: var(--accent-gold);
+      font-size: 1.8rem;
+      transition: color 0.3s ease;
+    }
+    .social-icons a:hover {
+      color: #fff;
+    }
+    .copyright {
+      text-align: center;
+      font-size: 0.9rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Section-specific Scroll Animations */
+    .animate {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <div class="logo-container">
+      <img src="school-logo.jpg" alt="School Logo" />
+      <h1>Zahira Ahadiyyah School</h1>
+    </div>
+    <nav>
+      <i class="fas fa-bars menu-toggle"></i>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#admissions">Admissions</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content animate">
+      <h1>Welcome to Zahira Ahadiyyah School</h1>
+      <p>Fostering Islamic Education with Modern Excellence for a Bright Future</p>
+      <a href="#admissions" class="cta-button">Apply Now</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about animate" id="about">
+    <div class="about-image">
+      <img src="campus-lux.png" alt="Luxurious Campus" />
+    </div>
+    <div class="about-content">
+        <h2>About Zahira Ahadiyyah School</h2>
+        <p>Zahira Ahadiyyah School, a leading educational institution in Dharga Town, blends Islamic values with modern education to empower young minds. With a commitment to academic excellence and a nurturing environment, we prepare students to lead with integrity and vision.</p>
+        <ul>
+          <li>Comprehensive Islamic education alongside modern academic programs</li>
+          <li>State-of-the-art facilities promoting a balanced learning experience</li>
+          <li>A dedicated faculty focused on the holistic development of each student</li>
+          <li>Active participation in extracurricular activities like sports and cultural events</li>
+        </ul>
+    </div>
+  </section>
+
+  <!-- Programs Section -->
+<section class="programs animate" id="programs">
+    <h2>Academic Programs at Zahira Ahadiyyah School</h2>
+    <div class="program-cards">
+      <div class="program-card">
+        <h3>Islamic Studies Program</h3>
+        <p>A comprehensive program designed to integrate Islamic teachings with modern academics, ensuring a well-rounded education.</p>
+        <div class="program-details">
+          <span>Holistic Approach</span><br>
+          <span>Focus on Quran and Hadith</span>
+        </div>
+      </div>
+      <div class="program-card">
+        <h3>Advanced Science and Technology</h3>
+        <p>Equipping students with cutting-edge knowledge in subjects like Physics, Chemistry, and Computer Science through hands-on experiences.</p>
+        <div class="program-details">
+          <span>Practical Learning</span><br>
+          <span>State-of-the-art Labs</span>
+        </div>
+      </div>
+      <div class="program-card">
+        <h3>Arts and Humanities</h3>
+        <p>An enriching program focusing on critical thinking, history, literature, and cultural studies to nurture creative minds.</p>
+        <div class="program-details">
+          <span>Creative Expression</span><br>
+          <span>In-depth Cultural Knowledge</span>
+        </div>
+      </div>
+      <!-- Additional program cards can be added here -->
+    </div>
+  </section>
+  
+
+ <!-- Admissions Section -->
+<section class="admissions animate" id="admissions">
+    <h2>Admissions Process at Zahira Ahadiyyah School</h2>
+    <div class="admissions-steps">
+      <div class="step-box">
+        <h3>Inquiry</h3>
+        <p>Fill out our online inquiry form to express your interest in joining Zahira Ahadiyyah School.</p>
+      </div>
+      <div class="step-box">
+        <h3>Campus Tour</h3>
+        <p>Visit our beautiful campus and explore our facilities while learning more about our Islamic and academic programs.</p>
+      </div>
+      <div class="step-box">
+        <h3>Interview</h3>
+        <p>Meet with our staff to discuss your child’s academic goals and how Zahira Ahadiyyah School can help them grow.</p>
+      </div>
+      <div class="step-box">
+        <h3>Enrollment</h3>
+        <p>Complete the necessary paperwork to enroll your child and become part of our esteemed institution.</p>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Testimonials Section -->
+<section class="testimonials animate" id="testimonials">
+    <h2>What Our Community Says About Zahira Ahadiyyah School</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>"Zahira Ahadiyyah School provided my child with the perfect balance of Islamic education and modern academics. It's truly a place where students grow both spiritually and intellectually."</p>
+        <h4>- Parent</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Attending Zahira Ahadiyyah School has been a life-changing experience. The values of discipline, integrity, and knowledge have prepared me for success in all areas of life."</p>
+        <h4>- Alumni</h4>
+      </div>
+      <!-- Additional testimonial cards can be added here -->
+    </div>
+  </section>
+  
+
+ <!-- Contact & Footer Section -->
+<footer id="contact">
+    <div class="footer-content">
+      <div>
+        <h3>Contact Us</h3>
+        <p>123 Zahira Road, Dharga Town, Sri Lanka</p>
+        <p>Email: contact@zahiraahadiyyah.edu.lk</p>
+        <p>Phone: +94 (11) 234-5678</p>
+      </div>
+      <div>
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/share/1Hgg7QY5yY/"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.instagram.com/zahira_ahadiyyah_school?igsh=MW95ZmZzMzR5eTA1NQ=="><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 Zahira Ahadiyyah School. All rights reserved.</p>
+    </div>
+  </footer>
+  
+
+  <!-- JavaScript: Smooth interactions and scroll animations -->
+  <script>
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Scroll Animation: Add 'visible' class when elements are in viewport
+    const animateElements = document.querySelectorAll('.animate');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // Animate once
+        }
+      });
+    }, { threshold: 0.2 });
+    animateElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    // Parallax Effect for Hero Background
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      document.querySelector('.hero').style.backgroundPositionY = (scrolled * 0.5) + 'px';
+    });
+  </script>
+</body>
+</html>
